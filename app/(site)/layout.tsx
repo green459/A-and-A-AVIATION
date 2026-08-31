@@ -19,15 +19,15 @@ import {
 } from "@/lib/data/settings";
 import "../globals.css";
 
-// Every page under (site) reads live, admin-editable data straight from the
-// database (services, blog posts, site settings, ...). Without this, `next
-// build` tries to prerender these pages statically, which means it needs a
-// working DB connection at build time — fragile on hosts (like Hostinger)
-// where the build environment can't reach the database, and it would also
-// mean admin edits never show up until the next rebuild. Forcing dynamic
-// rendering here cascades to every page in this route group, so they render
-// per-request against the live DB instead.
-export const dynamic = "force-dynamic";
+// // Every page under (site) reads live, admin-editable data straight from the
+// // database (services, blog posts, site settings, ...). Without this, `next
+// // build` tries to prerender these pages statically, which means it needs a
+// // working DB connection at build time — fragile on hosts (like Hostinger)
+// // where the build environment can't reach the database, and it would also
+// // mean admin edits never show up until the next rebuild. Forcing dynamic
+// // rendering here cascades to every page in this route group, so they render
+// // per-request against the live DB instead.
+// export const dynamic = "force-dynamic";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

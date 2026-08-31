@@ -6,10 +6,10 @@ import { getTermsConditions, getRefundPolicy } from "@/lib/data/settings";
 // Set NEXT_PUBLIC_SITE_URL in production to the real deployed domain.
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://aaaviation.com";
 
-// Queries the DB directly, so it needs the same force-dynamic treatment as
-// app/(site)/layout.tsx (see comment there) — this file sits alongside that
-// layout rather than under it, so it doesn't inherit the config.
-export const dynamic = "force-dynamic";
+// // Queries the DB directly, so it needs the same force-dynamic treatment as
+// // app/(site)/layout.tsx (see comment there) — this file sits alongside that
+// // layout rather than under it, so it doesn't inherit the config.
+// export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [services, blogPosts, terms, refund] = await Promise.all([
