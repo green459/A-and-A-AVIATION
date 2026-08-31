@@ -39,6 +39,14 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   // output: "standalone",
+  async rewrites() {
+    return [
+      {
+        source: "/uploads/:path*",
+        destination: "/api/uploads/:path*",
+      },
+    ];
+  },
   experimental: {
     serverActions: {
       // Default is 1MB. The admin's image-upload forms (partners, gallery,
