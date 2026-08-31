@@ -1,0 +1,178 @@
+// Prisma schema for the A&A Aviation admin module.
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  avatar       String?
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  sessions    Session[]
+  resetTokens PasswordResetToken[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  adminId   String
+  admin     AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  userAgent String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([adminId])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  adminId   String
+  admin     AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([adminId])
+}
+
+enum InquiryStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+  ARCHIVED
+}
+
+model Inquiry {
+  id              String        @id @default(cuid())
+  name            String
+  email           String
+  phone           String?
+  serviceCategory String?
+  message         String?       @db.Text
+  source          String        @default("contact_page")
+  status          InquiryStatus @default(NEW)
+  notes           String?       @db.Text
+  isRead          Boolean       @default(false)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  notifications Notification[]
+  replies       InquiryReply[]
+
+  @@index([status])
+}
+
+model InquiryReply {
+  id        String   @id @default(cuid())
+  inquiryId String
+  inquiry   Inquiry  @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+  message   String   @db.Text
+  // "email" — actually sent via SMTP; "mailto" — no SMTP configured, so this
+  // was only saved here and handed to the admin's own mail client instead.
+  method    String
+  createdAt DateTime @default(now())
+
+  @@index([inquiryId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  type      String   @default("NEW_INQUIRY")
+  message   String
+  inquiryId String?
+  inquiry   Inquiry? @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([isRead])
+  @@index([inquiryId])
+}
+
+model Service {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  category        String
+  title           String
+  tagline         String
+  description     String   @db.Text
+  features        Json
+  image           String
+  order           Int      @default(0)
+  isPublished     Boolean  @default(true)
+  metaTitle       String?
+  metaDescription String?  @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Blog {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  category        String
+  title           String
+  excerpt         String   @db.Text
+  content         String   @db.LongText
+  highlights      Json
+  image           String
+  publishedAt     DateTime @default(now())
+  isPublished     Boolean  @default(true)
+  metaTitle       String?
+  metaDescription String?  @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Destination {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  country         String
+  region          String
+  tagline         String
+  description     String   @db.Text
+  popularFor      Json
+  image           String
+  order           Int      @default(0)
+  isPublished     Boolean  @default(true)
+  metaTitle       String?
+  metaDescription String?  @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model SiteSetting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+model SeoMeta {
+  path        String   @id
+  title       String
+  description String   @db.Text
+  noindex     Boolean  @default(false)
+  updatedAt   DateTime @updatedAt
+}
+
+model NewsletterSubscriber {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  source     String   @default("footer")
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([isActive])
+}
