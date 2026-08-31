@@ -38,7 +38,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // output: "standalone",
   experimental: {
     serverActions: {
       // Default is 1MB. The admin's image-upload forms (partners, gallery,
