@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updateContactFormFields, type SettingsFormState } from "./actions";
 import type { ContactFormFieldsSettings } from "@/lib/data/settings";
 
@@ -15,6 +16,7 @@ export default function ContactFormFieldsForm({
     updateContactFormFields,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
 
   return (
     <form

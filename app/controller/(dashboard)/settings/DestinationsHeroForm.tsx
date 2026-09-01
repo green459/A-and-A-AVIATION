@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { FormField, TextInput, TextArea, ColorField } from "../_components/FormField";
 import ImageField from "../_components/ImageField";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updateDestinationsHero, type SettingsFormState } from "./actions";
 import type { DestinationsHero } from "@/lib/data/settings";
 
@@ -17,6 +18,7 @@ export default function DestinationsHeroForm({
     updateDestinationsHero,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
 
   return (
     <form

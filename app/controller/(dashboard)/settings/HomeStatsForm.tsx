@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import RepeatingFieldsField from "../_components/RepeatingFieldsField";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updateHomeStats, type SettingsFormState } from "./actions";
 import type { HomeStat } from "@/lib/data/settings";
 
@@ -12,6 +13,7 @@ export default function HomeStatsForm({ values }: { values: HomeStat[] }) {
     updateHomeStats,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
 
   return (
     <form

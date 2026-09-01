@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { RefreshCw } from "lucide-react";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { clearAllCaches, type ClearCacheState } from "./actions";
 
 const initialState: ClearCacheState = { clearedAt: null };
@@ -11,6 +12,7 @@ export default function ClearCacheForm() {
     clearAllCaches,
     initialState,
   );
+  useRefreshOnSuccess(!!state.clearedAt);
 
   return (
     <form

@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { FormField, TextInput, TextArea, ColorField } from "../_components/FormField";
 import ImageField from "../_components/ImageField";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updateServicesHero, type SettingsFormState } from "./actions";
 import type { ServicesHero } from "@/lib/data/settings";
 
@@ -13,6 +14,7 @@ export default function ServicesHeroForm({ values }: { values: ServicesHero }) {
     updateServicesHero,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
 
   return (
     <form

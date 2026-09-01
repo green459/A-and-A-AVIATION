@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { FormField, TextInput, TextArea } from "../_components/FormField";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updateSeoMeta, type SeoFormState } from "./actions";
 
 const initialState: SeoFormState = { error: null, success: false };
@@ -23,6 +24,7 @@ export default function SeoPageForm({
     updateSeoMeta,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
 
   return (
     <form

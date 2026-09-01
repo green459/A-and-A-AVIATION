@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import SocialLinksField from "./SocialLinksField";
 import { useUploadSizeGuard } from "../_components/upload-guard";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updateSocialLinks, type SettingsFormState } from "./actions";
 import type { SocialLink } from "@/lib/data/settings";
 
@@ -13,6 +14,7 @@ export default function SocialLinksForm({ values }: { values: SocialLink[] }) {
     updateSocialLinks,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
   const uploadGuard = useUploadSizeGuard();
 
   return (

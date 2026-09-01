@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { FormField, TextInput, TextArea } from "../_components/FormField";
 import ImageField from "../_components/ImageField";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updateAboutStory, type SettingsFormState } from "./actions";
 import type { AboutStory } from "@/lib/data/settings";
 
@@ -13,6 +14,7 @@ export default function AboutStoryForm({ values }: { values: AboutStory }) {
     updateAboutStory,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
 
   return (
     <form

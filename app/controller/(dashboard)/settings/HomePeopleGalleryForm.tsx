@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import ImageRepeatingFieldsField from "../_components/ImageRepeatingFieldsField";
 import { useUploadSizeGuard } from "../_components/upload-guard";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updateHomePeopleGallery, type SettingsFormState } from "./actions";
 import type { HomePeopleGalleryImage } from "@/lib/data/settings";
 
@@ -17,6 +18,7 @@ export default function HomePeopleGalleryForm({
     updateHomePeopleGallery,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
   const uploadGuard = useUploadSizeGuard();
 
   return (

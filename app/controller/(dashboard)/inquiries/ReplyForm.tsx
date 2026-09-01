@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useRef } from "react";
 import { Mail, Send } from "lucide-react";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { replyToInquiry, type ReplyState } from "./actions";
 
 const initialState: ReplyState = { status: "idle", error: null };
@@ -14,6 +15,7 @@ export default function ReplyForm({
   emailConfigured: boolean;
 }) {
   const [state, formAction, pending] = useActionState(replyToInquiry, initialState);
+  useRefreshOnSuccess(state.status === "sent-email");
   const formRef = useRef<HTMLFormElement>(null);
 
   // No SMTP configured — the action still saves the reply, then hands back

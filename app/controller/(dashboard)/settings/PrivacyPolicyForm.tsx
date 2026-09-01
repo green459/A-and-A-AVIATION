@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { FormField, TextInput, TextArea } from "../_components/FormField";
 import RepeatingFieldsField from "../_components/RepeatingFieldsField";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updatePrivacyPolicy, type SettingsFormState } from "./actions";
 import type { PrivacyPolicyContent } from "@/lib/data/settings";
 
@@ -17,6 +18,7 @@ export default function PrivacyPolicyForm({
     updatePrivacyPolicy,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
 
   return (
     <form

@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { FormField, TextInput } from "../_components/FormField";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updateHomeHero, type SettingsFormState } from "./actions";
 import type { HomeHero } from "@/lib/data/settings";
 
@@ -12,6 +13,7 @@ export default function HomeHeroForm({ values }: { values: HomeHero }) {
     updateHomeHero,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
 
   return (
     <form

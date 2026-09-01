@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { FormField, TextInput } from "../_components/FormField";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updateContactInfo, type SettingsFormState } from "./actions";
 import type { ContactInfo } from "@/lib/data/settings";
 
@@ -12,6 +13,7 @@ export default function ContactInfoForm({ values }: { values: ContactInfo }) {
     updateContactInfo,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
 
   return (
     <form

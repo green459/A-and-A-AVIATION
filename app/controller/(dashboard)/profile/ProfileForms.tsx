@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import {
   updateProfile,
   changePassword,
@@ -45,6 +46,7 @@ export function ProfileDetailsForm({
     updateProfile,
     profileInitialState,
   );
+  useRefreshOnSuccess(state.success);
 
   return (
     <form

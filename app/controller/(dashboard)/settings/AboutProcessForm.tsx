@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { FormField, TextInput } from "../_components/FormField";
 import RepeatingFieldsField from "../_components/RepeatingFieldsField";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updateAboutProcess, type SettingsFormState } from "./actions";
 import type { AboutProcess } from "@/lib/data/settings";
 
@@ -13,6 +14,7 @@ export default function AboutProcessForm({ values }: { values: AboutProcess }) {
     updateAboutProcess,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
 
   return (
     <form

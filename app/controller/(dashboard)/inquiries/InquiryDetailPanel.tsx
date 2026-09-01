@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef, useState } from "react";
 import type { Inquiry, InquiryReply } from "@/lib/generated/prisma/client";
 import { Select } from "../_components/FormField";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import ConfirmDialog from "../_components/ConfirmDialog";
 import StatusBadge from "./StatusBadge";
 import ReplyForm from "./ReplyForm";
@@ -25,6 +26,7 @@ const initialNotesState: NotesState = { status: "idle", error: null };
 
 function NotesForm({ id, notes }: { id: string; notes: string | null }) {
   const [state, formAction, pending] = useActionState(updateInquiryNotes, initialNotesState);
+  useRefreshOnSuccess(state.status === "success");
 
   return (
     <form action={formAction} className="flex flex-col gap-2">

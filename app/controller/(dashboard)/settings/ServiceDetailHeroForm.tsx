@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { ColorField } from "../_components/FormField";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updateServiceDetailHero, type SettingsFormState } from "./actions";
 import type { ServiceDetailHero } from "@/lib/data/settings";
 
@@ -16,6 +17,7 @@ export default function ServiceDetailHeroForm({
     updateServiceDetailHero,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
 
   return (
     <form

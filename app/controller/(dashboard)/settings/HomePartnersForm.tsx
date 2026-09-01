@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import ImageListField from "../_components/ImageListField";
 import { useUploadSizeGuard } from "../_components/upload-guard";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updateHomePartners, type SettingsFormState } from "./actions";
 import type { HomePartner } from "@/lib/data/settings";
 
@@ -17,6 +18,7 @@ export default function HomePartnersForm({
     updateHomePartners,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
   const uploadGuard = useUploadSizeGuard();
 
   return (

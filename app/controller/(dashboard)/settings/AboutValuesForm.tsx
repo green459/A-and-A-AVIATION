@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { FormField, TextInput } from "../_components/FormField";
 import RepeatingFieldsField from "../_components/RepeatingFieldsField";
+import { useRefreshOnSuccess } from "../_components/useRefreshOnSuccess";
 import { updateAboutValues, type SettingsFormState } from "./actions";
 import type { AboutValues } from "@/lib/data/settings";
 import { ABOUT_VALUE_ICON_OPTIONS } from "@/lib/data/icons";
@@ -14,6 +15,7 @@ export default function AboutValuesForm({ values }: { values: AboutValues }) {
     updateAboutValues,
     initialState,
   );
+  useRefreshOnSuccess(state.success);
 
   return (
     <form
