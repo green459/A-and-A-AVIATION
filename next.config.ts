@@ -76,18 +76,6 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: securityHeaders,
       },
-      // Prevent browsers from caching public pages so admin edits show up
-      // instantly for all visitors (not just the admin who made the change).
-      // `revalidatePath()` only busts the *server-side* Data Cache — the
-      // visitor's browser still holds stale HTML from its last visit unless
-      // we tell it not to cache. Uploaded images are excluded (they already
-      // use immutable caching with unique filenames).
-      {
-        source: "/((?!controller|api|uploads|_next).*)",
-        headers: [
-          { key: "Cache-Control", value: "no-store, must-revalidate" },
-        ],
-      },
     ];
   },
 };

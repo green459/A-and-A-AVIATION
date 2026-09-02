@@ -53,28 +53,78 @@ function parseLegalPageForm(formData: FormData) {
 export type SettingsFormState = { error: string | null; success: boolean };
 const OK: SettingsFormState = { error: null, success: true };
 
+/** Bust the server-side Data Cache for every public page. `revalidatePath('/',
+ * 'layout')` invalidates the root layout tree (all nested pages + layouts),
+ * and we also revalidate each top-level route individually so that any
+ * path-specific cache entries are cleared too. */
 function revalidatePublicPages() {
-  revalidatePath("/");
+  // Root layout revalidation — cascades to ALL pages under (site)
   revalidatePath("/", "layout");
-  // Without this, the settings page keeps showing whatever it fetched on
-  // its last full load — React resets every uncontrolled field in a
-  // submitted form back to its `defaultValue` once the action settles, and
-  // that `defaultValue` comes from this page's (now-stale) props. The
-  // fields the admin just typed would visibly revert (a brand-new row's
-  // text/alt back to blank) until a manual reload re-fetched the real data.
+
+  // Explicit per-route revalidation for belt-and-suspenders coverage.
+  // Dynamic routes (/services/[slug], /blogs/[slug], /destinations/[slug])
+  // are covered by the layout revalidation above.
+  for (const path of [
+    "/",
+    "/about",
+    "/services",
+    "/blogs",
+    "/destinations",
+    "/contact",
+    "/privacy-policy",
+    "/terms-and-conditions",
+    "/refund-policy",
+  ]) {
+    revalidatePath(path);
+  }
+
+  // Keep the admin settings page in sync so form fields don't revert
   revalidatePath("/controller/settings");
 }
 
 export type ClearCacheState = { clearedAt: number | null };
 
-/** Busts every cached render across the site — the root (site) layout tree
- * plus the admin layout tree — for when a fix needs to show up immediately
- * instead of waiting for the next natural revalidation. */
+/** Busts every cached render across the entire site — both the public
+ *  (site) tree and the admin (controller) tree. After this call the next
+ *  visitor to ANY page will get a fresh server-rendered response. */
 export async function clearAllCaches(): Promise<ClearCacheState> {
   await requireAdmin();
 
+  // --- Public site ---------------------------------------------------
+  // Root layout revalidation cascades to ALL nested pages/layouts
   revalidatePath("/", "layout");
+
+  // Explicit per-route revalidation
+  for (const path of [
+    "/",
+    "/about",
+    "/services",
+    "/blogs",
+    "/destinations",
+    "/contact",
+    "/privacy-policy",
+    "/terms-and-conditions",
+    "/refund-policy",
+  ]) {
+    revalidatePath(path);
+  }
+
+  // --- Admin panel ---------------------------------------------------
   revalidatePath("/controller", "layout");
+  for (const path of [
+    "/controller",
+    "/controller/settings",
+    "/controller/services",
+    "/controller/blogs",
+    "/controller/destinations",
+    "/controller/inquiries",
+    "/controller/newsletter",
+    "/controller/notifications",
+    "/controller/seo",
+    "/controller/profile",
+  ]) {
+    revalidatePath(path);
+  }
 
   return { clearedAt: Date.now() };
 }
